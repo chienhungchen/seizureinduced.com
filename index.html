@@ -1,1 +1,23 @@
-Hello seizureinduced
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">  
+        <title>AHH</title>
+        <meta name="description" content="Seizure Induced Induces Seizures.">  
+        <meta name="author" content="Jeff Chen">
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->  
+    </head>
+    <body>
+        <script type="text/javascript">
+			(function() {
+                var isWhite = true;
+                var flicker = function () {
+                    document.body.style.background = isWhite ? "black" : "white";
+                    isWhite = !isWhite;
+                    setTimeout(flicker, Math.random() * 300);
+                };
+                flicker();
+            })();
+		</script>
+    </body>
+</html>
