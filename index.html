@@ -1,22 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">  
         <title>AHH</title>
-        <meta name="description" content="Seizure Induced Induces Seizures.">  
-        <meta name="author" content="Jeff Chen">
-        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->  
+        <meta charset="utf-8">
+        <meta name="description" content="Seizure Induced Induces Seizures.">
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+        <style>
+        	body {
+        		margin: 0;
+        		padding: 0;
+        	}
+        	#bottom-bar {
+        		position: fixed;
+        		bottom: 0;
+        		height: 50px;
+        		width: 100%;
+        	}
+        	#stop {
+        		background-color: #fff;
+        		color: red;
+        		font-size: 20px;
+        		position: fixed;
+        		bottom: 10px;
+        		left: 10px;
+        		padding: 5px 10px;
+        		cursor: pointer;
+        		border-radius: 3px;
+        		box-shadow: 0 0 3px #ccc;
+        	}
+
+        	#flicker-choices {
+        		display: inline-block;
+				background-color: #fff;
+				padding: 5px 10px;
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				width: 150px;
+        	}
+        </style>
     </head>
     <body>
-        <script type="text/javascript">
+    	<section id="bottom-bar">
+	    	<span id="stop">STOP</span>
+	    	<div id="flicker-choices">
+	    		<label><input type="radio" name="color-choices" value="blackwhite" checked> Black & White</label>
+				<label><input type="radio" name="color-choices" value="color"> Colors</label>
+
+	    		<label><input type="radio" name="interval-choices" value="random" checked> Random</label>
+				<label><input type="radio" name="interval-choices" value="interval" > Interval</label>
+	    	</div>
+        </section>
+        <script>
+        	"use strict";
+        	//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
+        	function get_random_color() {
+			    var letters = '0123456789ABCDEF'.split(''),
+			    	color 	= '#',
+			    	i;
+			    for (i = 0; i < 6; i++) {
+			        color += letters[Math.round(Math.random() * 15)];
+			    }
+			    return color;
+			}
+
 			(function() {
-                var isWhite = true;
-                var flicker = function () {
-                    document.body.style.background = isWhite ? "black" : "white";
-                    isWhite = !isWhite;
-                    setTimeout(flicker, Math.random() * 300);
-                };
-                flicker();
+				var cnf = confirm("Are you sure you want to continue? There will be flashing lights! Continue at your own risk!"),
+					isStopped = false;
+				if(cnf === true) {
+					var isWhite = true;
+	                var flicker = function() {
+	                	if(!isStopped) {
+	                    	document.body.style.background = isWhite ? "black" : "white";
+	                    }
+	                    isWhite = !isWhite;
+	                    setTimeout(flicker, Math.random() * 300);
+	                };
+	                flicker();
+				}
+				document.getElementById("stop").onclick = function(e){
+					isStopped = !isStopped;
+					this.innerHTML = isStopped ? "START" : "STOP";
+				};
             })();
 		</script>
     </body>
