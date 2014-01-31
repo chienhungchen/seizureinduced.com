@@ -10,12 +10,14 @@
         		margin: 0;
         		padding: 0;
         	}
+
         	#bottom-bar {
         		position: fixed;
         		bottom: 0;
         		height: 50px;
         		width: 100%;
         	}
+
         	#stop {
         		background-color: #fff;
         		color: red;
@@ -29,35 +31,67 @@
         		box-shadow: 0 0 3px #ccc;
         	}
 
-        	#flicker-choices {
-        		display: inline-block;
-				background-color: #fff;
-				padding: 5px 10px;
-				position: fixed;
-				bottom: 0;
-				right: 0;
-				width: 150px;
-        	}
+            #settings {
+                background-color: #fff;
+                color: #555;
+                font-size: 18px;
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                padding: 5px 10px;
+                cursor: pointer;
+                border-radius: 3px;
+                box-shadow: 0 0 3px #ccc;
+            }
+
+            #overlay {
+                visibility: hidden;
+                background-color: #eee;
+                margin: 75px auto;
+                width: 250px;
+                min-height:250px;
+                z-index: 1000;
+                padding: 20px 10px;
+            }
+
+            #overlay.show {
+                visibility: visible !important;
+            }
+
+            #interval-size-wrapper {
+                display: none;
+            }
         </style>
     </head>
     <body>
+        <div id="overlay">
+            <div>
+                <h2>Settings</h2>
+                <div id="color-choices">
+                    <h4>Colors</h4>
+                    <label><input class="color-choice-radio" type="radio" name="color-choices" value="blackwhite" checked> Black & White</label>
+                    <label><input class="color-choice-radio" type="radio" name="color-choices" value="color"> Colors</label>
+                </div>
+                <div id="interval-choices">
+                    <h4>Interval</h4>
+                    <label><input class="interval-choice-radio" type="radio" name="interval-choices" value="random" checked> Random</label>
+                    <label><input class="interval-choice-radio" type="radio" name="interval-choices" value="interval" > Interval</label><br />
+                    <div id="interval-size-wrapper">
+                        <label>Milliseconds:<input id="interval-size" type="text" value="100"></input></label>
+                        <button id="interval-size-apply">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     	<section id="bottom-bar">
 	    	<span id="stop">STOP</span>
-	    	<div id="flicker-choices">
-	    		<label><input type="radio" name="color-choices" value="blackwhite" checked> Black & White</label>
-				<label><input type="radio" name="color-choices" value="color"> Colors</label>
-
-	    		<label><input type="radio" name="interval-choices" value="random" checked> Random</label>
-				<label><input type="radio" name="interval-choices" value="interval" > Interval</label>
-	    	</div>
+	    	<span id="settings">Settings</span>
         </section>
         <script>
-        	"use strict";
+        	'use strict';
         	//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
         	function get_random_color() {
-			    var letters = '0123456789ABCDEF'.split(''),
-			    	color 	= '#',
-			    	i;
+			    var letters = '0123456789ABCDEF'.split(''), color 	= '#', i;
 			    for (i = 0; i < 6; i++) {
 			        color += letters[Math.round(Math.random() * 15)];
 			    }
@@ -65,23 +99,94 @@
 			}
 
 			(function() {
-				var cnf = confirm("Are you sure you want to continue? There will be flashing lights! Continue at your own risk!"),
-					isStopped = false;
-				if(cnf === true) {
-					var isWhite = true;
-	                var flicker = function() {
-	                	if(!isStopped) {
-	                    	document.body.style.background = isWhite ? "black" : "white";
-	                    }
-	                    isWhite = !isWhite;
-	                    setTimeout(flicker, Math.random() * 300);
-	                };
-	                flicker();
-				}
-				document.getElementById("stop").onclick = function(e){
+                //Define some stuff here, yo.
+				var userAcceptedRisk = confirm('Are you sure you want to continue? There will be flashing lights! Continue at your own risk!'),
+					isStopped = false,
+                    isColor = false,
+                    isWhite = true,
+                    intervalRandom = true,
+                    interval = parseInt(document.getElementById('interval-size').value),
+                    flicker = function() {
+
+                        //Black and White
+                        if(!isStopped) {
+                            if(!isColor) {
+                                document.body.style.background = isWhite ? 'black' : 'white';
+                            }
+                            else {
+                                document.body.style.background = isWhite ? get_random_color() : 'white';
+                            }
+                            isWhite = !isWhite;
+                        }
+
+                        if(intervalRandom) {
+                            setTimeout(flicker, Math.random() * 300);
+                        }
+                        else {
+                            setTimeout(flicker, interval);
+                        }
+                    };
+
+                //--------------------
+                //Event Handlers
+                //--------------------
+
+                //Start/Stop button
+				document.getElementById('stop').onclick = function(e){
 					isStopped = !isStopped;
-					this.innerHTML = isStopped ? "START" : "STOP";
+					this.innerHTML = isStopped ? 'START' : 'STOP';
 				};
+
+                //Settings toggle button
+                document.getElementById('settings').onclick = function(e){
+                    var overlayEl = document.getElementById('overlay');
+                    if(overlayEl.className != 'show') {
+                        overlayEl.className = 'show';
+                    }
+                    else {
+                        overlayEl.className = '';
+                    }
+                };
+
+                //Interval Size Apply Button
+                document.getElementById('interval-size-apply').onclick = function(e) {
+                    interval = parseInt(document.getElementById('interval-size').value);
+                };
+
+                //Color choices
+                var colorChoiceRadios = document.getElementsByClassName('color-choice-radio');
+                for(var i = 0; i < colorChoiceRadios.length; i++) {
+                    colorChoiceRadios[i].onclick = function(e) {
+                        isColor = this.value === 'color';
+                    };
+                }
+
+                //Interval Choices
+                var intervalChoiceRadios = document.getElementsByClassName('interval-choice-radio');
+                for(var i = 0; i < intervalChoiceRadios.length; i++) {
+                    intervalChoiceRadios[i].onclick = function(e) {
+                        intervalRandom = !(this.value === 'interval');
+                        if(!intervalRandom) {
+                            document.getElementById('interval-size-wrapper').style.display = 'block';
+                        }
+                    };
+                }
+                
+                document.body.onkeypress = function(e) {
+                    //TODO
+                };
+
+                //--------------------
+                //Event Handlers End
+                //--------------------
+
+
+                //Start the application!
+                //If warning is confirmed, then start!
+                if(userAcceptedRisk === true) {
+                    flicker();
+                }
+
             })();
 		</script>
     </body>
