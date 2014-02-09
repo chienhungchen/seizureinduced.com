@@ -182,19 +182,19 @@
 
                 //Start/Stop button
 				document.getElementById('stop').onclick = toggleStop;
-                document.getElementById('stop').addEventListener('touchstart', toggleStop);
+                document.getElementById('stop').addEventListener('touchend', toggleStop);
 
                 //Settings toggle button
                 document.getElementById('settings').onclick = toggleSettings;
-                document.getElementById('settings').addEventListener('touchstart', toggleSettings);
+                document.getElementById('settings').addEventListener('touchend', toggleSettings);
 
                 //Interval Size Apply Button
                 document.getElementById('interval-size-apply').onclick = applySizeAmount;
-                document.getElementById('interval-size-apply').addEventListener('touchstart', applySizeAmount);
+                document.getElementById('interval-size-apply').addEventListener('touchend', applySizeAmount);
 
                 //Close overlay
                 document.getElementById('overlay-close').onclick = closeSettings;
-                document.getElementById('overlay-close').addEventListener('touchstart', closeSettings);
+                document.getElementById('overlay-close').addEventListener('touchend', closeSettings);
 
                 //Color choices
                 var colorChoiceRadios = document.getElementsByClassName('color-choice-radio');
