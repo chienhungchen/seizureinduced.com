@@ -138,12 +138,9 @@
                     this.innerHTML = isStopped ? 'START' : 'STOP';
                 }
 
-                //Start/Stop button
-				document.getElementById('stop').onclick = toggleStop;
-                document.getElementById('stop').addEventListener('touchstart', toggleStop);
-
-                //Settings toggle button
-                document.getElementById('settings').onclick = function(e){
+                function toggleSettings(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     var overlayEl = document.getElementById('overlay');
                     if(overlayEl.className != 'show') {
                         overlayEl.className = 'show';
@@ -151,12 +148,25 @@
                     else {
                         overlayEl.className = '';
                     }
-                };
+                }
 
-                //Interval Size Apply Button
-                document.getElementById('interval-size-apply').onclick = function(e) {
+                function applySizeAmount(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     interval = parseInt(document.getElementById('interval-size').value);
                 };
+
+                //Start/Stop button
+				document.getElementById('stop').onclick = toggleStop;
+                document.getElementById('stop').addEventListener('touchstart', toggleStop);
+
+                //Settings toggle button
+                document.getElementById('settings').onclick = toggleSettings;
+                document.getElementById('settings').addEventListener('touchstart', toggleSettings);
+
+                //Interval Size Apply Button
+                document.getElementById('interval-size-apply').onclick = applySizeAmount;
+                document.getElementById('interval-size-apply').addEventListener('touchstart', applySizeAmount);
 
                 //Color choices
                 var colorChoiceRadios = document.getElementsByClassName('color-choice-radio');
