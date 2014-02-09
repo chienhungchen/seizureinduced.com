@@ -179,7 +179,18 @@
                     e.stopPropagation();
                     e.preventDefault();
                     interval = parseInt(document.getElementById('interval-size').value);
-                };
+                }
+
+                function colorChoiceOnClick(e) {
+                    isColor = this.value === 'color';
+                }
+
+                function intervalChoiceOnClick(e) {
+                    intervalRandom = !(this.value === 'interval');
+                    if(!intervalRandom) {
+                        document.getElementById('interval-size-wrapper').style.display = 'block';
+                    }
+                }
 
                 //Start/Stop button
 				document.getElementById('stop').onclick = toggleStop;
@@ -200,20 +211,15 @@
                 //Color choices
                 var colorChoiceRadios = document.getElementsByClassName('color-choice-radio');
                 for(var i = 0; i < colorChoiceRadios.length; i++) {
-                    colorChoiceRadios[i].onclick = function(e) {
-                        isColor = this.value === 'color';
-                    };
+                    colorChoiceRadios[i].onclick = colorChoiceOnClick;
+                    colorChoiceRadios[i].addEventListener('touchend', colorChoiceOnClick);
                 }
 
                 //Interval Choices
                 var intervalChoiceRadios = document.getElementsByClassName('interval-choice-radio');
                 for(var i = 0; i < intervalChoiceRadios.length; i++) {
-                    intervalChoiceRadios[i].onclick = function(e) {
-                        intervalRandom = !(this.value === 'interval');
-                        if(!intervalRandom) {
-                            document.getElementById('interval-size-wrapper').style.display = 'block';
-                        }
-                    };
+                    intervalChoiceRadios[i].onclick = intervalChoiceOnClick;
+                    intervalChoiceRadios[i].addEventListener('touchend', intervalChoiceOnClick);
                 }
                 
                 document.body.onkeypress = function(e) {
