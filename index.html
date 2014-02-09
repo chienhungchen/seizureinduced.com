@@ -30,6 +30,7 @@
         		cursor: pointer;
         		border-radius: 3px;
         		box-shadow: 0 0 3px #ccc;
+                user-select: none;
         	}
 
             #settings {
@@ -43,6 +44,7 @@
                 cursor: pointer;
                 border-radius: 3px;
                 box-shadow: 0 0 3px #ccc;
+                user-select: none;
             }
 
             #overlay {
@@ -53,10 +55,24 @@
                 min-height:250px;
                 z-index: 1000;
                 padding: 20px 10px;
+                border-radius: 3px;
             }
 
             #overlay.show {
                 visibility: visible !important;
+            }
+
+            #overlay-close {
+                float: right;
+                position: relative;
+                top: -40px;
+                left: 10px;
+                font-family: Arial;
+                width: 35px;
+                height: 35px;
+                text-align: center;
+                line-height: 35px;
+                cursor: pointer;
             }
 
             #interval-size-wrapper {
@@ -67,6 +83,7 @@
     <body>
         <div id="overlay">
             <div>
+                <span id="overlay-close">x</span>
                 <h2>Settings</h2>
                 <div id="color-choices">
                     <h4>Colors</h4>
@@ -150,6 +167,13 @@
                     }
                 }
 
+                function closeSettings(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var overlayEl = document.getElementById('overlay');
+                    overlayEl.className = '';
+                }
+
                 function applySizeAmount(e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -167,6 +191,10 @@
                 //Interval Size Apply Button
                 document.getElementById('interval-size-apply').onclick = applySizeAmount;
                 document.getElementById('interval-size-apply').addEventListener('touchstart', applySizeAmount);
+
+                //Close overlay
+                document.getElementById('overlay-close').onclick = closeSettings;
+                document.getElementById('overlay-close').addEventListener('touchstart', closeSettings);
 
                 //Color choices
                 var colorChoiceRadios = document.getElementsByClassName('color-choice-radio');
