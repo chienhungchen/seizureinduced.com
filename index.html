@@ -138,6 +138,10 @@
 					this.innerHTML = isStopped ? 'START' : 'STOP';
 				};
 
+                document.getElementById('stop').addEventListener('touchstart', function(e){
+                    alert('derp');
+                });
+
                 //Settings toggle button
                 document.getElementById('settings').onclick = function(e){
                     var overlayEl = document.getElementById('overlay');
