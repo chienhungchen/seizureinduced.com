@@ -182,10 +182,14 @@
                 }
 
                 function colorChoiceOnClick(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     isColor = this.value === 'color';
                 }
 
                 function intervalChoiceOnClick(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     intervalRandom = !(this.value === 'interval');
                     if(!intervalRandom) {
                         document.getElementById('interval-size-wrapper').style.display = 'block';
