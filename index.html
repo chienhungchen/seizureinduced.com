@@ -131,16 +131,16 @@
                 //--------------------
                 //Event Handlers
                 //--------------------
+                function toggleStop(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    isStopped = !isStopped;
+                    this.innerHTML = isStopped ? 'START' : 'STOP';
+                }
 
                 //Start/Stop button
-				document.getElementById('stop').onclick = function(e){
-					isStopped = !isStopped;
-					this.innerHTML = isStopped ? 'START' : 'STOP';
-				};
-
-                document.getElementById('stop').addEventListener('touchstart', function(e){
-                    alert('derp');
-                });
+				document.getElementById('stop').onclick = toggleStop;
+                document.getElementById('stop').addEventListener('touchstart', toggleStop);
 
                 //Settings toggle button
                 document.getElementById('settings').onclick = function(e){
